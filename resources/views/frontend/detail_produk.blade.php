@@ -19,85 +19,37 @@
 <!-- Product Detail -->
 <section class="py-5">
     <div class="container">
-        <div class="row">
-            <!-- Product Images -->
-            <div class="col-lg-6 mb-4">
-                <div class="card border-0 shadow">
-                    <div class="card-body p-0">
-                        <img src="{{ $produk->gambar ? asset('upload/produk/'.$produk->gambar) : 'https://via.placeholder.com/600x600' }}" 
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="product-box p-5 mb-5" style="background: #e8e8e8; border-top: 3px solid #7b2d2d; border-bottom: 3px solid #7b2d2d; display: flex; gap: 40px; align-items: start;">
+                    <!-- Product Image -->
+                    <div class="product-img">
+                        <img src="{{ $produk->gambar ? asset('upload/produk/'.$produk->gambar) : asset('upload/produk/1773286849.jpg') }}" 
                              alt="{{ $produk->nama_produk }}" 
-                             class="img-fluid w-100"
-                             id="mainImage">
+                             style="width: 350px; border: 4px solid #1e90ff;">
                     </div>
-                </div>
-                
-                <!-- Thumbnail Gallery -->
-                @if($produk->slide1 || $produk->slide2 || $produk->slide3)
-                <div class="row mt-3 g-2">
-                    @if($produk->gambar)
-                    <div class="col-3">
-                        <img src="{{ asset('upload/produk/'.$produk->gambar) }}" 
-                             alt="Thumbnail" 
-                             class="img-thumbnail cursor-pointer w-100"
-                             onclick="changeImage('{{ asset('upload/produk/'.$produk->gambar) }}')">
+                    
+                    <!-- Product Info -->
+                    <div class="product-info flex-grow-1" style="font-size: 14px;">
+                        <h3 style="margin-top: 0; color: #7b2d2d;">Nama Produk:</h3>
+                        <h4>{{ $produk->nama_produk }}</h4>
+                        
+                        <p><b>Deskripsi Produk:</b><br>{{ $produk->deskripsi ?: 'Ulos berkualitas tinggi dari pengrajin Batak tradisional.' }}</p>
+                        
+                        <p><b>Kategori Produk:</b><br>{{ $produk->kategori->nama_kategori ?? 'Ulos' }}</p>
+                        
+                        <p><b>Harga Produk:</b><br>
+                        <span class="price" style="color: red; font-weight: bold; font-size: 20px;">Rp {{ number_format($produk->harga, 0, ',', '.') }}</span>
+                        </p>
+                        
+                        <div style="display: flex; gap: 10px;">
+                            <a href="#" class="btn" style="background: #dc3545; padding: 12px 24px; border-radius: 4px; color: white; text-decoration: none;">Wishlist</a>
+                            <a href="https://wa.me/6281234567890?text=Saya ingin pesan {{ urlencode($produk->nama_produk) }} - Rp{{ number_format($produk->harga, 0, ',', '.') }}" 
+                               class="btn" style="background: #198754; padding: 12px 24px; border-radius: 4px; color: white; text-decoration: none;" target="_blank">
+                                Pesan
+                            </a>
+                        </div>
                     </div>
-                    @endif
-                    @if($produk->slide1)
-                    <div class="col-3">
-                        <img src="{{ asset('upload/produk/'.$produk->slide1) }}" 
-                             alt="Slide 1" 
-                             class="img-thumbnail cursor-pointer w-100"
-                             onclick="changeImage('{{ asset('upload/produk/'.$produk->slide1) }}')">
-                    </div>
-                    @endif
-                    @if($produk->slide2)
-                    <div class="col-3">
-                        <img src="{{ asset('upload/produk/'.$produk->slide2) }}" 
-                             alt="Slide 2" 
-                             class="img-thumbnail cursor-pointer w-100"
-                             onclick="changeImage('{{ asset('upload/produk/'.$produk->slide2) }}')">
-                    </div>
-                    @endif
-                    @if($produk->slide3)
-                    <div class="col-3">
-                        <img src="{{ asset('upload/produk/'.$produk->slide3) }}" 
-                             alt="Slide 3" 
-                             class="img-thumbnail cursor-pointer w-100"
-                             onclick="changeImage('{{ asset('upload/produk/'.$produk->slide3) }}')">
-                    </div>
-                    @endif
-                </div>
-                @endif
-            </div>
-            
-            <!-- Product Info -->
-            <div class="col-lg-6">
-                <span class="category-badge mb-2 d-inline-block">{{ $produk->kategori->nama_kategori }}</span>
-                <h1 class="font-display mb-3">{{ $produk->nama_produk }}</h1>
-                <h2 class="price-text mb-4">Rp {{ number_format($produk->harga, 0, ',', '.') }}</h2>
-                
-                <div class="mb-4">
-                    <h5>Deskripsi Produk</h5>
-                    <p class="text-muted">{{ $produk->deskripsi ?: 'Deskripsi produk belum tersedia.' }}</p>
-                </div>
-                
-                <div class="mb-4">
-                    <h5>Informasi Tambahan</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Produk Original</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Kualitas Terjamin</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Bisa Cod / Transfer</li>
-                    </ul>
-                </div>
-                
-                <div class="d-grid gap-2">
-                    <a href="https://wa.me/6281234567890?text=Saya%20ingin%20memesan%20{{ urlencode($produk->nama_produk) }}" 
-                       class="btn btn-success btn-lg" target="_blank">
-                        <i class="fab fa-whatsapp me-2"></i>Pesan via WhatsApp
-                    </a>
-                    <a href="{{ route('frontend.produk') }}" class="btn btn-outline-primary btn-lg">
-                        <i class="fas fa-arrow-left me-2"></i>Kembali ke Produk
-                    </a>
                 </div>
             </div>
         </div>

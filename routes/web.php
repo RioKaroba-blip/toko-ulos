@@ -14,7 +14,7 @@ Route::get('/produk/{id}', [HomeController::class, 'detail'])->name('frontend.de
 Route::get('/tentang-kami', [HomeController::class, 'tentangKami'])->name('frontend.tentang');
 Route::get('/ulasan', [HomeController::class, 'ulasan'])->name('frontend.ulasan');
 
-Route::post('/kirim-ulasan', [UlasanController::class, 'store'])->name('kirim-ulasan');
+Route::post('/kirim-ulasan', [UlasanController::class, 'store'])->middleware('throttle:ulasan')->name('kirim-ulasan');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 

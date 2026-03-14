@@ -1,3 +1,74 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-maroon {
+  background-color: #b53a3a;
+  color: white;
+  border-color: #b53a3a;
+}
+
+.btn-maroon:hover {
+  background-color: #9b3232;
+  color: white;
+}
+
+.btn-maroon.active {
+  background-color: #8a2a2a;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+@layer components {
+  .hero-gradient {
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.9) 0%, rgba(210, 105, 30, 0.9) 100%);
+  }
+  
+  .card-hover {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+  }
+  
+  .btn-gradient {
+    background: linear-gradient(135deg, var(--batak-brown) 0%, var(--batak-orange) 100%);
+    border: none;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  .btn-gradient:hover::before {
+    left: 100%;
+  }
+  
+  .prototype-card .prototype-img {
+    height: 250px;
+    object-fit: cover;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, var(--batak-gold) 0%, var(--batak-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .backdrop-blur {
+    backdrop-filter: blur(10px);
+  }
+}

@@ -7,7 +7,7 @@ use App\Models\Kategori;
 use App\Models\Ulasan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -64,14 +64,15 @@ class AdminController extends Controller
         // Handle photo upload
         if ($request->hasFile('owner_photo')) {
             // Delete old photo if exists
-            if ($user->owner_photo && File::exists(public_path('upload/profile/' . $user->owner_photo))) {
-                File::delete(public_path('upload/profile/' . $user->owner_photo));
+            if ($user->owner_photo) {
+                Storage::disk('public')->delete('profile/' . $user->owner_photo);
             }
 
             // Upload new photo
             $photo = $request->file('owner_photo');
-            $photoName = time() . '_' . $photo->getClientOriginalName();
-            $photo->move(public_path('upload/profile'), $photoName);
+            $extension = $photo->getClientOriginalExtension();
+            $photoName = time() . '_owner.' . $extension;
+            Storage::disk('public')->putFileAs('profile', $photo, $photoName);
             $user->owner_photo = $photoName;
         }
 

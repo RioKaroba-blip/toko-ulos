@@ -1,5 +1,20 @@
 @extends('layouts.frontend')
 
+@section('styles')
+<style>
+.testimonials-slider .carousel-control-prev,
+.testimonials-slider .carousel-control-next {
+    width: 5%;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+.testimonials-slider .carousel-control-prev:hover,
+.testimonials-slider .carousel-control-next:hover {
+    opacity: 1;
+}
+</style>
+@endsection
+
 @section('title', 'Beranda - Elizabeth Ulos')
 
 @section('content')
@@ -12,17 +27,17 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ asset('build/assets/Pakean adat.jpg') }}" class="d-block w-100" alt="Busana Adat Toba" style="height: 500px; object-fit: cover;">
+                <img src="{{ asset('build/assets/Toba_Batak.jpg') }}" class="d-block w-100" alt="Busana Adat Toba" style="height: 500px; object-fit: cover;" loading="lazy">
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="display-3 font-display mb-4">Keindahan Busana Adat Toba</h1>
                     <p class="lead mb-4">Koleksi eksklusif ulos, songket, dan sortali dari pengrajin terbaik Sumatra Utara</p>
                     <a href="{{ route('frontend.produk') }}" class="btn btn-primary btn-lg px-5">
-                        <i class="fas fa-shopping-bag me-2"></i>Lihat Koleksi
+                        <i class="fas fa-shopping-bag me-2"></i>Lihat Kolek
                     </a>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/pasang batik.webp') }}" class="d-block w-100" alt="Batik Tradisional" style="height: 500px; object-fit: cover;">
+                <img src="{{ asset('build/assets/pasang batik.webp') }}" class="d-block w-100" alt="Batik Tradisional" style="height: 500px; object-fit: cover;" loading="lazy">
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="display-3 font-display mb-4">Keindahan Busana Adat Toba</h1>
                     <p class="lead mb-4">Koleksi eksklusif ulos, songket, dan sortali dari pengrajin terbaik Sumatra Utara</p>
@@ -49,11 +64,12 @@
         <h2 class="section-title text-center">Produk Terlaris</h2>
         <div class="row">
             @forelse($produkLaris as $produk)
-            <div class="col-md-4 mb-4">
+            <div class="col-lg-3 col-md-6 mb-4">
                 <div class="card product-card h-100">
-                    <img src="{{ $produk->gambar ? asset('upload/produk/'.$produk->gambar) : 'https://via.placeholder.com/300x250' }}" 
+                    <img src="{{ $produk->gambar ? asset('upload/produk/'.$produk->gambar) : 'https://via.placeholder.com/400x300' }}" 
                          class="card-img-top" 
-                         alt="{{ $produk->nama_produk }}">
+                         alt="{{ $produk->nama_produk }}"
+                         loading="lazy">
                     <div class="card-body">
                         <span class="category-badge mb-2 d-inline-block">{{ $produk->kategori->nama_kategori }}</span>
                         <h5 class="card-title">{{ $produk->nama_produk }}</h5>
@@ -65,8 +81,12 @@
                 </div>
             </div>
             @empty
-            <div class="col-12 text-center">
-                <p class="text-muted">Belum ada produk terlaris saat ini.</p>
+            <div class="col-12 text-center py-5">
+                <div class="animate__animated animate__fadeIn">
+                    <i class="fas fa-crown fa-5x text-muted mb-4"></i>
+                    <h3 class="text-muted mb-3">Produk Terlaris Segera Hadir</h3>
+                    <p class="lead text-muted">Koleksi premium kami sedang disiapkan</p>
+                </div>
             </div>
             @endforelse
         </div>
@@ -103,7 +123,7 @@
             <div class="col-md-4 mb-3">
                 <a href="{{ route('frontend.produk', ['kategori' => $kat->id]) }}" class="text-decoration-none">
                     <div class="card product-card text-center p-4">
-                        <i class="fas fa-tshirt fa-3x text-primary mb-3"></i>
+        <img src="{{ asset('upload/produk/' . $kat->id . '.jpg') }}" class="img-fluid rounded-circle mb-3" style="width: 80px; height: 80px; object-fit: cover;" alt="{{ $kat->nama_kategori }}" onerror="this.src='https://via.placeholder.com/80?text={{ $kat->nama_kategori[0] }}'">
                         <h4>{{ $kat->nama_kategori }}</h4>
                         <p class="text-muted mb-0">Lihat Koleksi</p>
                     </div>
@@ -117,7 +137,8 @@
 <!-- Testimoni -->
 <section class="py-5 bg-light">
     <div class="container">
-        <h2 class="section-title text-center">Apa Kata Customer</h2>
+<h2 class="section-title text-center">Testimoni Pada Toko Kami</h2>
+<p class="text-center lead mb-5 text-muted" style="max-width: 600px; margin: 0 auto;">Terdapat Beberapa Testimoni Yang Kami Dapatkan Ketika Menjual Produk Kami</p>
         <div class="row">
             @forelse($ulasanTampil as $ulasan)
             <div class="col-md-4 mb-4">

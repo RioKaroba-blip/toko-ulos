@@ -27,12 +27,17 @@ class HomeController extends Controller
     public function produk(Request $request)
     {
         $kategori = Kategori::all();
+        $query = Produk::query();
+        
+        if ($request->search) {
+            $query->where('nama_produk', 'like', '%' . $request->search . '%');
+        }
         
         if ($request->kategori) {
-            $produk = Produk::where('kategori_id', $request->kategori)->get();
-        } else {
-            $produk = Produk::all();
+            $query->where('kategori_id', $request->kategori);
         }
+        
+        $produk = $query->get();
         
         return view('frontend.produk', compact('produk', 'kategori'));
     }
@@ -51,9 +56,14 @@ class HomeController extends Controller
     /**
      * Display the about us page.
      */
-    public function tentangKami()
+public function tentangKami()
     {
-        return view('frontend.tentang_kami');
+        $featuredProducts = Produk::whereNotNull('gambar')
+            ->orderBy('is_laris', 'desc')
+            ->limit(2)
+            ->get();
+        
+        return view('frontend.tentang_kami', compact('featuredProducts'));
     }
 
     /**

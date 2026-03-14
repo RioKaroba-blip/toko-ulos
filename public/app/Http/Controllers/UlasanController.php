@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ulasan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UlasanController extends Controller
 {
@@ -29,23 +30,26 @@ class UlasanController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:100',
             'email' => 'required|email|max:100',
-            'ulasan' => 'required',
+            'ulasan' => 'required|string|max:1000',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        $validated['nama_pengirim'] = $validated['nama'];
+        $validated['isi_ulasan'] = $validated['ulasan'];
+        $validated['status'] = 'sembunyi';
+        unset($validated['nama'], $validated['ulasan']);
+
         $ulasan = new Ulasan();
-        $ulasan->nama_pengirim = $request->nama;
-        $ulasan->email = $request->email;
-        $ulasan->isi_ulasan = $request->ulasan;
-        $ulasan->status = 'sembunyi'; // Default tersembunyi
+        $ulasan->fill($validated);
 
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
-            $nama = time() . '.' . $file->getClientOriginalExtension();
-            $file->move('upload/ulasan', $nama);
+            $extension = $file->getClientOriginalExtension();
+            $nama = time() . '_' . $extension;
+            Storage::disk('public')->putFileAs('ulasan', $file, $nama);
             $ulasan->gambar = $nama;
         }
 
@@ -77,15 +81,16 @@ class UlasanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_pengirim' => 'required|string|max:100',
             'email' => 'required|email|max:100',
-            'isi_ulasan' => 'required',
+            'isi_ulasan' => 'required|string',
             'status' => 'required|in:tampil,sembunyi',
         ]);
 
         $ulasan = Ulasan::findOrFail($id);
-        $ulasan->update($request->all());
+        $ulasan->fill($validated);
+        $ulasan->save();
 
         return redirect()->route('admin.ulasan.index')->with('success', 'Ulasan berhasil diperbarui');
     }
@@ -108,8 +113,8 @@ class UlasanController extends Controller
     {
         $ulasan = Ulasan::findOrFail($id);
         
-        if ($ulasan->gambar && file_exists(public_path('upload/ulasan/' . $ulasan->gambar))) {
-            unlink(public_path('upload/ulasan/' . $ulasan->gambar));
+        if ($ulasan->gambar) {
+            Storage::disk('public')->delete('ulasan/' . $ulasan->gambar);
         }
         
         $ulasan->delete();
