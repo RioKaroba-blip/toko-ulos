@@ -16,7 +16,7 @@
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="display-3 font-display mb-4">Selamat Datang</h1>
                     <p class="lead mb-4">Di Halaman Tentang Toko Elizabeth Ulos</p>
-                    <a href="{{ route('frontend.produk') }}" class="btn btn-primary btn-lg px-5">
+                    <a href="{{ route('produk') }}" class="btn btn-primary btn-lg px-5">
                         <i class="fas fa-gem me-2"></i>Produk Unggulan
                     </a>
                 </div>
@@ -71,7 +71,7 @@
                     'nama_produk' => $produk->nama_produk,
                     'harga' => $produk->harga,
                     'kategori' => $produk->kategori->nama_kategori ?? 'Ulos',
-                    'link' => route('frontend.detail', $produk->id),
+                    'link' => route('detail_produk', $produk->id),
                     'is_laris' => $produk->is_laris
                 ])
             </div>

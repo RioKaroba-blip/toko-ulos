@@ -1,183 +1,74 @@
 @extends('layouts.frontend')
 
-@section('styles')
-<style>
-.testimonials-slider .carousel-control-prev,
-.testimonials-slider .carousel-control-next {
-    width: 5%;
-    opacity: 0.5;
-    transition: opacity 0.3s;
-}
-.testimonials-slider .carousel-control-prev:hover,
-.testimonials-slider .carousel-control-next:hover {
-    opacity: 1;
-}
-</style>
-@endsection
-
 @section('title', 'Beranda - Elizabeth Ulos')
 
 @section('content')
-<!-- Hero Section with Carousel -->
-<section class="hero-section text-center p-0">
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{{ asset('build/assets/Toba_Batak.jpg') }}" class="d-block w-100" alt="Busana Adat Toba" style="height: 500px; object-fit: cover;" loading="lazy">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="display-3 font-display mb-4">Keindahan Busana Adat Toba</h1>
-                    <p class="lead mb-4">Koleksi eksklusif ulos, songket, dan sortali dari pengrajin terbaik Sumatra Utara</p>
-                    <a href="{{ route('frontend.produk') }}" class="btn btn-primary btn-lg px-5">
-                        <i class="fas fa-shopping-bag me-2"></i>Lihat Kolek
-                    </a>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('build/assets/pasang batik.webp') }}" class="d-block w-100" alt="Batik Tradisional" style="height: 500px; object-fit: cover;" loading="lazy">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="display-3 font-display mb-4">Keindahan Busana Adat Toba</h1>
-                    <p class="lead mb-4">Koleksi eksklusif ulos, songket, dan sortali dari pengrajin terbaik Sumatra Utara</p>
-                    <a href="{{ route('frontend.produk') }}" class="btn btn-primary btn-lg px-5">
-                        <i class="fas fa-shopping-bag me-2"></i>Lihat Koleksi
-                    </a>
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+
+<!-- Hero Section -->
+<section style="position:relative; min-height:500px; background:linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)), url('{{ asset('images/hero.jpg') }}') center/cover no-repeat; display:flex; align-items:center; justify-content:center; text-align:center; color:white;">
+    <div style="padding:20px;">
+        <h1 style="font-size:2.5rem; font-weight:700; margin-bottom:1rem;">Ulos dengan tenunan indah</h1>
+        <p style="font-size:1rem; max-width:600px; margin:0 auto 2rem;">Toko yang menyediakan RAGAM ULOS BATAK, untuk keperluan pesta batak serta ragam sarung tenunan tangan, melayani pengiriman barang ke seluruh wilayah Indonesia</p>
+        <a href="#produk-terlaris" class="btn" style="background:#333; color:white; padding:12px 40px; border-radius:4px; text-decoration:none; font-size:1rem;">Produk Terlaris</a>
     </div>
 </section>
 
 <!-- Produk Terlaris -->
-<section class="py-5">
+<section id="produk-terlaris" class="py-5" style="background:#fff;">
     <div class="container">
-        <h2 class="section-title text-center">Produk Terlaris</h2>
-        <div class="row">
+        <h2 style="text-align:center; color:#6B1A1A; font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:10px;">Produk Terlaris</h2>
+        <div style="width:60px; height:3px; background:#6B1A1A; margin:0 auto 40px;"></div>
+        <div class="row justify-content-center">
             @forelse($produkLaris as $produk)
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="card product-card h-100">
-                    <img src="{{ $produk->gambar ? asset('upload/produk/'.$produk->gambar) : 'https://via.placeholder.com/400x300' }}" 
-                         class="card-img-top" 
-                         alt="{{ $produk->nama_produk }}"
-                         loading="lazy">
-                    <div class="card-body">
-                        <span class="category-badge mb-2 d-inline-block">{{ $produk->kategori->nama_kategori }}</span>
-                        <h5 class="card-title">{{ $produk->nama_produk }}</h5>
-                        <p class="price-text">Rp {{ number_format($produk->harga, 0, ',', '.') }}</p>
-                        <a href="{{ route('frontend.detail', $produk->id) }}" class="btn btn-primary w-100">
-                            <i class="fas fa-eye me-1"></i>Lihat Detail
-                        </a>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div style="border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                    <img src="{{ $produk->gambar ? asset('upload/produk/'.$produk->gambar) : 'https://via.placeholder.com/400x300' }}"
+                         style="width:100%; height:250px; object-fit:cover;" alt="{{ $produk->nama_produk }}">
+                    <div style="padding:15px;">
+                        <h5 style="font-weight:700; margin-bottom:5px;">{{ $produk->nama_produk }}</h5>
+                        <p style="color:#6B1A1A; font-weight:600;">Rp.{{ number_format($produk->harga, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
             @empty
-            <div class="col-12 text-center py-5">
-                <div class="animate__animated animate__fadeIn">
-                    <i class="fas fa-crown fa-5x text-muted mb-4"></i>
-                    <h3 class="text-muted mb-3">Produk Terlaris Segera Hadir</h3>
-                    <p class="lead text-muted">Koleksi premium kami sedang disiapkan</p>
-                </div>
+            <div class="col-12 text-center py-4">
+                <p class="text-muted">Belum ada produk terlaris.</p>
             </div>
             @endforelse
-        </div>
-        <div class="text-center mt-4">
-            <a href="{{ route('frontend.produk') }}" class="btn btn-outline-primary btn-lg">
-                Lihat Semua Produk <i class="fas fa-arrow-right ms-2"></i>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Tentang Toko -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="font-display mb-4">Tentang Elizabeth Ulos</h2>
-                <p class="lead">Kami adalah toko busana adat terpercaya yang berlokasi di Pematangsiantar, Sumatra Utara.</p>
-                <p>Elizabeth Ulos hadir untuk melestarikan kekayaan budaya bangsa melalui koleksi ulos, songket, dan sortali authentic dari para pengrajin lokal. Setiap produk yang kami tawarkan dibuat dengan penuh dedikasi dan keahlian tradisi turun-temurun.</p>
-                <a href="{{ route('frontend.tentang') }}" class="btn btn-primary">
-                    Selengkapnya <i class="fas fa-arrow-right ms-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Kategori Produk -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="section-title text-center">Kategori Produk</h2>
-        <div class="row justify-content-center">
-            @foreach($kategori as $kat)
-            <div class="col-md-4 mb-3">
-                <a href="{{ route('frontend.produk', ['kategori' => $kat->id]) }}" class="text-decoration-none">
-                    <div class="card product-card text-center p-4">
-        <img src="{{ asset('upload/produk/' . $kat->id . '.jpg') }}" class="img-fluid rounded-circle mb-3" style="width: 80px; height: 80px; object-fit: cover;" alt="{{ $kat->nama_kategori }}" onerror="this.src='https://via.placeholder.com/80?text={{ $kat->nama_kategori[0] }}'">
-                        <h4>{{ $kat->nama_kategori }}</h4>
-                        <p class="text-muted mb-0">Lihat Koleksi</p>
-                    </div>
-                </a>
-            </div>
-            @endforeach
         </div>
     </div>
 </section>
 
 <!-- Testimoni -->
-<section class="py-5 bg-light">
+<section class="py-5" style="background:#f8f8f8;">
     <div class="container">
-<h2 class="section-title text-center">Testimoni Pada Toko Kami</h2>
-<p class="text-center lead mb-5 text-muted" style="max-width: 600px; margin: 0 auto;">Terdapat Beberapa Testimoni Yang Kami Dapatkan Ketika Menjual Produk Kami</p>
+        <h2 style="text-align:center; color:#6B1A1A; font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:10px;">Testimoni Pada Toko Kami</h2>
+        <div style="width:60px; height:3px; background:#6B1A1A; margin:0 auto 10px;"></div>
+        <p style="text-align:center; color:#666; margin-bottom:40px;">Terdapat Beberapa Testimoni Yang Kami Dapatkan Ketika Menjual Produk Kami</p>
         <div class="row">
             @forelse($ulasanTampil as $ulasan)
-            <div class="col-md-4 mb-4">
-                <div class="testimonial-card">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="bg-primary rounded-circle p-2 me-3">
-                            <i class="fas fa-user text-white"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-0">{{ $ulasan->nama_pengirim }}</h6>
-                            <small class="text-muted">{{ $ulasan->created_at->format('d M Y') }}</small>
-                        </div>
+            <div class="col-md-6 mb-4">
+                <div style="display:flex; gap:15px; padding:15px; background:#fff; border:1px solid #eee; border-radius:8px;">
+                    @if($ulasan->gambar)
+                    <img src="{{ asset('upload/ulasan/'.$ulasan->gambar) }}" style="width:80px; height:80px; object-fit:cover; border-radius:4px; flex-shrink:0;" alt="">
+                    @else
+                    <div style="width:80px; height:80px; background:#ddd; border-radius:4px; flex-shrink:0;"></div>
+                    @endif
+                    <div>
+                        <h6 style="font-weight:700; margin-bottom:2px;">{{ $ulasan->nama_pengirim }}</h6>
+                        <small style="color:#999;">{{ $ulasan->email ?? '' }}</small>
+                        <p style="margin:8px 0 5px; font-size:0.9rem;">{{ $ulasan->isi_ulasan }}</p>
+                        <small style="color:#999;">{{ $ulasan->created_at->format('Y-m-d H:i:s') }}</small>
                     </div>
-                    <p class="mb-0">"{{ $ulasan->isi_ulasan }}"</p>
                 </div>
             </div>
             @empty
             <div class="col-12 text-center">
-                <p class="text-muted">Belum ada testimoni saat ini.</p>
+                <p class="text-muted">Belum ada testimoni.</p>
             </div>
             @endforelse
         </div>
-        <div class="text-center mt-4">
-            <a href="{{ route('frontend.ulasan') }}" class="btn btn-outline-primary">
-                Lihat Semua Ulasan <i class="fas fa-arrow-right ms-2"></i>
-            </a>
-        </div>
     </div>
 </section>
 
-<!-- Call to Action -->
-<section class="py-5" style="background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);">
-    <div class="container text-center text-white">
-        <h2 class="font-display mb-3">Punya Pertanyaan?</h2>
-        <p class="mb-4">Hubungi kami untuk informasi lebih lanjut tentang produk kami</p>
-        <a href="https://wa.me/6281234567890" class="btn btn-light btn-lg">
-            <i class="fab fa-whatsapp me-2"></i>Hubungi Kami
-        </a>
-    </div>
-</section>
 @endsection
-

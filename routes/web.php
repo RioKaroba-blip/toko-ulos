@@ -1,41 +1,58 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\UlasanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\ProdukController;
+use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\Admin\UlasanController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/produk', [HomeController::class, 'produk'])->name('frontend.produk');
-Route::get('/produk/{id}', [HomeController::class, 'detail'])->name('frontend.detail');
-Route::get('/tentang-kami', [HomeController::class, 'tentangKami'])->name('frontend.tentang');
-Route::get('/ulasan', [HomeController::class, 'ulasan'])->name('frontend.ulasan');
+// Frontend Routes
+Route::get('/', [FrontendController::class, 'home'])->name('home');
+Route::get('/produk', [FrontendController::class, 'produk'])->name('produk');
+Route::get('/produk/{id}', [FrontendController::class, 'detailProduk'])->name('detail_produk');
+Route::get('/tentang-kami', [FrontendController::class, 'tentangKami'])->name('tentang_kami');
+Route::get('/ulasan', [FrontendController::class, 'ulasan'])->name('ulasan');
+Route::post('/ulasan/kirim', [FrontendController::class, 'kirimUlasan'])->name('kirim-ulasan');
 
-Route::post('/kirim-ulasan', [UlasanController::class, 'store'])->middleware('throttle:ulasan')->name('kirim-ulasan');
+// Admin Routes
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+    // Produk
+    Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
+    Route::get('/produk/tambah', [ProdukController::class, 'create'])->name('produk.create');
+    Route::post('/produk/tambah', [ProdukController::class, 'store'])->name('produk.store');
+    Route::get('/produk/laris', [ProdukController::class, 'laris'])->name('produk.laris');
+    Route::post('/produk/laris', [ProdukController::class, 'tambahLaris'])->name('produk.laris.tambah');
+    Route::delete('/produk/laris/{id}', [ProdukController::class, 'hapusLaris'])->name('produk.laris.hapus');
+    Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
+    Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 
-    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    // Kategori
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+    Route::get('/kategori/tambah', [KategoriController::class, 'create'])->name('kategori.create');
+    Route::post('/kategori', [KategoriController::class, 'store'])->name('kategori.store');
+    Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
 
-    Route::resource('/admin/produk', ProdukController::class)->names('admin.produk');
+    // Ulasan
+    Route::get('/ulasan', [UlasanController::class, 'index'])->name('ulasan.index');
+    Route::put('/ulasan/{id}/tampilkan', [UlasanController::class, 'tampilkan'])->name('ulasan.tampilkan');
+    Route::put('/ulasan/{id}/sembunyikan', [UlasanController::class, 'sembunyikan'])->name('ulasan.sembunyikan');
+    Route::delete('/ulasan/{id}', [UlasanController::class, 'destroy'])->name('ulasan.destroy');
 
-    Route::resource('/admin/kategori', KategoriController::class)->names('admin.kategori');
-
-    Route::resource('/admin/ulasan', UlasanController::class)->names('admin.ulasan');
-    Route::get('/admin/ulasan/{id}/status/{status}', [UlasanController::class, 'updateStatus'])->name('admin.ulasan.updateStatus');
-
-    Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile');
-    Route::put('/admin/profile', [AdminController::class, 'profileUpdate'])->name('admin.profile.update');
-
-    Route::get('/admin/password', [AdminController::class, 'password'])->name('admin.password');
+    // Profile & Password
+    Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
+    Route::put('/profile', [AdminController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/password', [AdminController::class, 'password'])->name('password');
+    Route::put('/password', [AdminController::class, 'updatePassword'])->name('password.update');
 });
 
 Route::get('/dashboard', function () {
     return redirect()->route('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

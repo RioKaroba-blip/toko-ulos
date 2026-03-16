@@ -86,7 +86,7 @@
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="{{ route('admin.kategori.create') }}" class="btn btn-success w-100 py-3">
+                        <a href="{{ route('admin.kategori.index') }}" class="btn btn-success w-100 py-3">
                             <i class="fas fa-plus-circle me-2"></i>Tambah Kategori
                         </a>
                     </div>
@@ -127,12 +127,15 @@
                         </thead>
                         <tbody>
                             @php
-                            $recentProduk = \App\Models\Produk::latest()->take(5)->get();
+                            $recentProduk = collect([]);
+                            try {
+                                $recentProduk = \App\Models\Product::latest()->take(5)->get();
+                            } catch (\Exception $e) {}
                             @endphp
                             @forelse($recentProduk as $p)
                             <tr>
                                 <td>
-                                    <img src="{{ $p->gambar ? asset('upload/produk/'.$p->gambar) : 'https://via.placeholder.com/50' }}" 
+                                    <img src="{{ $p->gambar ? asset('upload/produk/'.$p->gambar) : 'https://via.placeholder.com/50' }}"
                                          alt="{{ $p->nama_produk }}"
                                          style="width: 50px; height: 50px; object-fit: cover;"
                                          class="rounded">
@@ -171,7 +174,10 @@
                         </thead>
                         <tbody>
                             @php
-                            $recentUlasan = \App\Models\Ulasan::latest()->take(5)->get();
+                            $recentUlasan = collect([]);
+                            try {
+                                $recentUlasan = \App\Models\Ulasan::latest()->take(5)->get();
+                            } catch (\Exception $e) {}
                             @endphp
                             @forelse($recentUlasan as $u)
                             <tr>
@@ -198,4 +204,3 @@
     </div>
 </div>
 @endsection
-
