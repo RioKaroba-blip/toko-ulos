@@ -3,7 +3,7 @@
 @section('title', 'Tentang Kami - Elizabeth Ulos')
 
 @section('content')
-<!-- Hero Carousel - Same as Home -->
+<!-- Hero Carousel -->
 <section class="hero-section text-center p-0">
     <div id="heroCarouselTentang" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -12,7 +12,7 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ asset('build/assets/Toba_Batak.jpg') }}" class="d-block w-100" alt="Busana Adat Toba" style="height: 500px; object-fit: cover;" loading="lazy">
+                <img src="{{ asset('images/Toba_Batak.jpg') }}" class="d-block w-100" alt="Busana Adat Toba" style="height: 500px; object-fit: cover;" loading="lazy">
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="display-3 font-display mb-4">Selamat Datang</h1>
                     <p class="lead mb-4">Di Halaman Tentang Toko Elizabeth Ulos</p>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('build/assets/pasang batik.webp') }}" class="d-block w-100" alt="Ulos Tradisional" style="height: 500px; object-fit: cover;" loading="lazy">
+                <img src="{{ asset('images/hero.jpg') }}" class="d-block w-100" alt="Ulos Tradisional" style="height: 500px; object-fit: cover;" loading="lazy">
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="display-3 font-display mb-4">Elizabeth Ulos</h1>
                     <p class="lead mb-4">Toko ulos tradisional Batak terbaik</p>
