@@ -20,7 +20,7 @@ class KategoriController extends Controller
 
     public function create()
     {
-        return view('admin.kategori.create');
+        return view('admin.kategori.tambah');
     }
 
     public function store(Request $request)
