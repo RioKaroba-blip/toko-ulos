@@ -40,7 +40,7 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $k->nama_kategori }}</td>
-                        <td><span class="badge bg-secondary">{{ $k->produk->count() ?? 0 }} produk</span></td>
+                        <td><span class="badge bg-secondary">{{ $k->produk ? $k->produk->count() : 0 }} produk</span></td>
                         <td>
                             <form action="{{ route('admin.kategori.destroy', $k->id) }}" method="POST" class="d-inline">
                                 @csrf
