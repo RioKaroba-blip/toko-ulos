@@ -9,6 +9,10 @@ class ProdukSeeder extends Seeder
 {
     public function run(): void
     {
+        // Hapus data lama dulu
+        DB::table('produk')->truncate();
+        DB::table('kategori')->truncate();
+
         // Isi Kategori
         DB::table('kategori')->insert([
             ['nama_kategori' => 'Ulos', 'created_at' => now(), 'updated_at' => now()],
