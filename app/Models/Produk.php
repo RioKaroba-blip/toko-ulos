@@ -14,10 +14,10 @@ class Produk extends Model
         'harga',
         'deskripsi',
         'is_laris',
-        'gambar_utama',
-        'slide_1',
-        'slide_2',
-        'slide_3',
+        'gambar',
+        'slide1',
+        'slide2',
+        'slide3',
     ];
 
     public function kategori()
