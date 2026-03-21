@@ -9,9 +9,11 @@ class ProdukSeeder extends Seeder
 {
     public function run(): void
     {
-        // Hapus data lama dulu
+        // Disable foreign key checks dulu
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('produk')->truncate();
         DB::table('kategori')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // Isi Kategori
         DB::table('kategori')->insert([
