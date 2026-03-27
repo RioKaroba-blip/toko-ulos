@@ -19,16 +19,19 @@ class UlasanController extends Controller
 
     public function tampilkan($id)
     {
+        \App\Models\Ulasan::findOrFail($id)->update(['status' => 'tampil']);
         return redirect()->route('admin.ulasan.index')->with('success', 'Ulasan ditampilkan!');
     }
 
     public function sembunyikan($id)
     {
+        \App\Models\Ulasan::findOrFail($id)->update(['status' => 'sembunyi']);
         return redirect()->route('admin.ulasan.index')->with('success', 'Ulasan disembunyikan!');
     }
 
     public function destroy($id)
     {
+        \App\Models\Ulasan::findOrFail($id)->delete();
         return redirect()->route('admin.ulasan.index')->with('success', 'Ulasan berhasil dihapus!');
     }
 }
