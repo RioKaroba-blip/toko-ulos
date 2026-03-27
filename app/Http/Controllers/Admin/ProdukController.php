@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Produk;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProdukController extends Controller
 {
@@ -35,29 +34,41 @@ class ProdukController extends Controller
         $request->validate([
             'nama_produk' => 'required|string|max:255',
             'kategori_id' => 'required',
-            'harga' => 'required|numeric',
-            'deskripsi' => 'required|string',
+            'harga'       => 'required|numeric',
+            'deskripsi'   => 'required|string',
         ]);
 
         $data = [
             'nama_produk' => $request->nama_produk,
             'kategori_id' => $request->kategori_id,
-            'harga' => $request->harga,
-            'deskripsi' => $request->deskripsi,
-            'is_laris' => $request->has('is_laris') ? 1 : 0,
+            'harga'       => $request->harga,
+            'deskripsi'   => $request->deskripsi,
+            'is_laris'    => $request->has('is_laris') ? 1 : 0,
         ];
 
         if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request->file('gambar')->store('produk', 'public');
+            $file = $request->file('gambar');
+            $filename = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('upload/produk'), $filename);
+            $data['gambar'] = $filename;
         }
         if ($request->hasFile('slide1')) {
-            $data['slide1'] = $request->file('slide1')->store('produk', 'public');
+            $file = $request->file('slide1');
+            $filename = time().'_slide1_'.$file->getClientOriginalName();
+            $file->move(public_path('upload/produk'), $filename);
+            $data['slide1'] = $filename;
         }
         if ($request->hasFile('slide2')) {
-            $data['slide2'] = $request->file('slide2')->store('produk', 'public');
+            $file = $request->file('slide2');
+            $filename = time().'_slide2_'.$file->getClientOriginalName();
+            $file->move(public_path('upload/produk'), $filename);
+            $data['slide2'] = $filename;
         }
         if ($request->hasFile('slide3')) {
-            $data['slide3'] = $request->file('slide3')->store('produk', 'public');
+            $file = $request->file('slide3');
+            $filename = time().'_slide3_'.$file->getClientOriginalName();
+            $file->move(public_path('upload/produk'), $filename);
+            $data['slide3'] = $filename;
         }
 
         Produk::create($data);
@@ -82,13 +93,16 @@ class ProdukController extends Controller
         $data = [
             'nama_produk' => $request->nama_produk,
             'kategori_id' => $request->kategori_id,
-            'harga' => $request->harga,
-            'deskripsi' => $request->deskripsi,
-            'is_laris' => $request->has('is_laris') ? 1 : 0,
+            'harga'       => $request->harga,
+            'deskripsi'   => $request->deskripsi,
+            'is_laris'    => $request->has('is_laris') ? 1 : 0,
         ];
 
         if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request->file('gambar')->store('produk', 'public');
+            $file = $request->file('gambar');
+            $filename = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('upload/produk'), $filename);
+            $data['gambar'] = $filename;
         }
 
         $produk->update($data);
