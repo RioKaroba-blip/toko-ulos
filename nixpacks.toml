@@ -14,4 +14,4 @@ cmds = [
 ]
 
 [start]
-cmd = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "php artisan migrate --force && mkdir -p public/upload/produk public/upload/ulasan public/upload/profile && php artisan storage:link --force && php artisan serve --host=0.0.0.0 --port=$PORT"
