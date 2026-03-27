@@ -1,8 +1,6 @@
 @extends('layouts.admin')
-
 @section('title', 'Kelola Ulasan - Admin Elizabeth Ulos')
 @section('page-title', 'Kelola Ulasan')
-
 @section('content')
 <div class="card">
     <div class="card-body">
@@ -12,7 +10,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
         @endif
-
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead class="table-light">
@@ -21,6 +18,7 @@
                         <th>Nama Pengirim</th>
                         <th>Email</th>
                         <th>Ulasan</th>
+                        <th>Foto</th>
                         <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
@@ -34,6 +32,13 @@
                         <td>{{ $u->email }}</td>
                         <td>{{ Str::limit($u->isi_ulasan, 50) }}</td>
                         <td>
+                            @if($u->gambar)
+                            <img src="{{ asset('upload/ulasan/'.$u->gambar) }}" style="width:45px;height:45px;object-fit:cover;border-radius:50%;">
+                            @else
+                            <span class="text-muted">-</span>
+                            @endif
+                        </td>
+                        <td>
                             @if($u->status == 'tampil')
                             <span class="badge bg-success">Tampil</span>
                             @else
@@ -42,25 +47,27 @@
                         </td>
                         <td>{{ $u->created_at->format('d M Y') }}</td>
                         <td>
-                            <a href="{{ route('admin.ulasan.show', $u->id) }}" class="btn btn-sm btn-info text-white">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                            <a href="{{ route('admin.ulasan.edit', $u->id) }}" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
                             @if($u->status == 'sembunyi')
-                            <a href="{{ route('admin.ulasan.updateStatus', [$u->id, 'tampil']) }}" class="btn btn-sm btn-success" onclick="return confirm('Tampilkan ulasan ini?')">
-                                <i class="fas fa-check"></i>
-                            </a>
+                            <form action="{{ route('admin.ulasan.tampilkan', $u->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Tampilkan ulasan ini?')">
+                                    <i class="fas fa-check"></i> Tampilkan
+                                </button>
+                            </form>
                             @else
-                            <a href="{{ route('admin.ulasan.updateStatus', [$u->id, 'sembunyi']) }}" class="btn btn-sm btn-secondary" onclick="return confirm('Sembunyikan ulasan ini?')">
-                                <i class="fas fa-eye-slash"></i>
-                            </a>
+                            <form action="{{ route('admin.ulasan.sembunyikan', $u->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-sm btn-secondary" onclick="return confirm('Sembunyikan ulasan ini?')">
+                                    <i class="fas fa-eye-slash"></i> Sembunyikan
+                                </button>
+                            </form>
                             @endif
                             <form action="{{ route('admin.ulasan.destroy', $u->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus ulasan ini?')">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Hapus ulasan ini?')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -68,11 +75,12 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center text-muted py-4">Belum ada ulasan</td>
+                        <td colspan="8" class="text-center text-muted py-4">Belum ada ulasan</td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+    </div>
 </div>
 @endsection
