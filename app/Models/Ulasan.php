@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Ulasan extends Model
 {
     protected $table = 'ulasan';
-    
+
     protected $fillable = [
-        'produk_id',
-        'user_id', 
-        'rating',
-        'komentar',
+        'nama_pengirim',
+        'email',
+        'isi_ulasan',
+        'gambar',
+        'status',
     ];
 
     public function user()
