@@ -9,11 +9,21 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password'
+        'password',
+        'owner_name',
+        'owner_bio',
+        'owner_phone',
+        'owner_address',
+        'owner_photo',
+        'whatsapp',
+        'facebook',
+        'instagram',
+        'tiktok',
+        'youtube',
     ];
 
     protected $hidden = [
         'password',
-        'remember_token'
+        'remember_token',
     ];
 }
