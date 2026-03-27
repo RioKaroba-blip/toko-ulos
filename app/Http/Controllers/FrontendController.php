@@ -13,7 +13,7 @@ class FrontendController extends Controller
     {
         $produkLaris = Produk::where('is_laris', true)->get();
         $kategori = Kategori::all();
-        $ulasanTampil = Ulasan::with('user')->latest()->take(5)->get();
+        $ulasanTampil = Ulasan::where('status', 'tampil')->latest()->take(5)->get();
 
         return view('frontend.home', compact('produkLaris', 'kategori', 'ulasanTampil'));
     }
@@ -42,7 +42,7 @@ class FrontendController extends Controller
 
     public function ulasan()
     {
-        $ulasan = Ulasan::with('user')->latest()->get();
+        $ulasan = Ulasan::where('status', 'tampil')->latest()->get();
 
         return view('frontend.ulasan', compact('ulasan'));
     }
@@ -50,18 +50,28 @@ class FrontendController extends Controller
     public function kirimUlasan(Request $request)
     {
         $request->validate([
-            'produk_id' => 'required|exists:produk,id',
-            'rating'    => 'required|integer|min:1|max:5',
-            'komentar'  => 'required|string|max:500',
+            'nama'   => 'required|string|max:100',
+            'email'  => 'required|email|max:100',
+            'ulasan' => 'required|string|max:1000',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        Ulasan::create([
-            'produk_id' => $request->produk_id,
-            'user_id'   => auth()->id(),
-            'rating'    => $request->rating,
-            'komentar'  => $request->komentar,
-        ]);
+        $data = [
+            'nama_pengirim' => $request->nama,
+            'email'         => $request->email,
+            'isi_ulasan'    => $request->ulasan,
+            'status'        => 'sembunyi',
+        ];
 
-        return redirect()->back()->with('success', 'Ulasan berhasil dikirim!');
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $filename = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('upload/ulasan'), $filename);
+            $data['gambar'] = $filename;
+        }
+
+        Ulasan::create($data);
+
+        return redirect()->back()->with('success', 'Ulasan berhasil dikirim! Menunggu persetujuan admin.');
     }
 }
