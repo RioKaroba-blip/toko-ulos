@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
 class AdminController extends Controller
 {
     public function dashboard()
@@ -15,7 +12,6 @@ class AdminController extends Controller
         $jumlahProdukLaris = 0;
         $jumlahUlasan = 0;
         $jumlahUlasanTampil = 0;
-
         try {
             $jumlahProduk = \App\Models\Produk::count();
             $jumlahKategori = \App\Models\Kategori::count();
@@ -23,7 +19,6 @@ class AdminController extends Controller
             $jumlahUlasan = \App\Models\Ulasan::count();
             $jumlahUlasanTampil = \App\Models\Ulasan::where('status', 'tampil')->count();
         } catch (\Exception $e) {}
-
         return view('admin.dashboard', compact(
             'jumlahProduk',
             'jumlahKategori',
@@ -33,11 +28,11 @@ class AdminController extends Controller
         ));
     }
 
-   public function profile()
-{
-    $user = Auth::user();
-    return view('admin.profile.index', compact('user'));
-}
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('admin.profile.index', compact('user'));
+    }
 
     public function updateProfile(Request $request)
     {
@@ -54,24 +49,19 @@ class AdminController extends Controller
             'owner_address' => 'nullable|string',
             'owner_photo'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
         $user = Auth::user();
-
         $data = $request->only([
             'whatsapp', 'email', 'facebook',
             'instagram', 'tiktok', 'youtube',
             'owner_name', 'owner_bio', 'owner_phone', 'owner_address',
         ]);
-
         if ($request->hasFile('owner_photo')) {
             $file = $request->file('owner_photo');
             $filename = time().'_'.$file->getClientOriginalName();
             $file->move(public_path('upload/profile'), $filename);
             $data['owner_photo'] = $filename;
         }
-
         $user->update($data);
-
         return redirect()->route('admin.profile')->with('success', 'Profil berhasil diupdate!');
     }
 
@@ -85,11 +75,9 @@ class AdminController extends Controller
         $request->validate([
             'password' => 'required|min:6|confirmed',
         ]);
-
         Auth::user()->update([
             'password' => Hash::make($request->password)
         ]);
-
         return redirect()->route('admin.password')->with('success', 'Password berhasil diubah!');
     }
 }
