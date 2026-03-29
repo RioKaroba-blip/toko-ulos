@@ -33,10 +33,11 @@ class AdminController extends Controller
         ));
     }
 
-    public function profile()
-    {
-        return view('admin.profile.index');
-    }
+   public function profile()
+{
+    $user = Auth::user();
+    return view('admin.profile.index', compact('user'));
+}
 
     public function updateProfile(Request $request)
     {
