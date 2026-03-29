@@ -32,7 +32,7 @@
     <nav class="top-navbar">
         <div class="container d-flex align-items-center justify-content-between">
             <a href="{{ route('home') }}" class="d-flex align-items-center text-decoration-none">
-                <img src="{{ asset('upload/profile/karo.jpeg') }}" class="navbar-logo" alt="Logo"
+                <img src="{{ asset('upload/profile/Ellipse.png') }}" class="navbar-logo" alt="Logo"
                      onerror="this.src='https://ui-avatars.com/api/?name=E&background=6B1A1A&color=fff'">
                 <span class="navbar-brand-text">ELIZABETH ULOS</span>
             </a>
